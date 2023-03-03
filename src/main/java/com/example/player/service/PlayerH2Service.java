@@ -21,12 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
-
 import java.util.*;
 import com.example.player.model.PlayerRowMapper;
 // Don't modify the below code
 
-@service
+@Service
 public class PlayerH2Service implements PlayerRepository {
 @Autowired
 private JdbcTemplate db;
@@ -57,10 +56,7 @@ private JdbcTemplate db;
 
     @Override
     public Player updatePlayer(int playerId, Player player) {
-        Player existingPlayer=team.get(playerId);
-        if(existingPlayer == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+        
 
         if (player.getplayerName() != null) {
             db.update("update player set playerName=? where playerId=?",player.getplayerName(),playerId);
@@ -76,7 +72,7 @@ private JdbcTemplate db;
         
     return getPlayerById(playerId);
     }
-    }
+    
      @Override
     public Player addPlayer(Player player) {
         db.update("insert into player(playerName,jerseyNumber,role) values (?,?,?)",player.getplayerName(),player.getjerseyNumber(),player.getrole());
@@ -87,7 +83,7 @@ private JdbcTemplate db;
 
     @Override
     public ArrayList<Player> getPlayers() {
-        List<Player> playerList = db.query("select * from Player",new PlayerRowMapper());
+        List<Player> playerList = db.query("select * from player",new PlayerRowMapper());
         
         ArrayList<Player> players = new ArrayList<>(playerList);
         return players;
